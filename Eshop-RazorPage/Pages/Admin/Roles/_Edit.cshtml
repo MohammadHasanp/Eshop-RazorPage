@@ -1,0 +1,46 @@
+﻿@using Eshop_RazorPage.Models.Role
+@using Eshop_RazorPage.ViewModel
+@model EditRoleViewModel
+@{
+    ViewData["title"] = "ویرایش نقش ";
+    ViewData["selected"] = "roles";
+}
+<form class="card" method="post" data-ajax="true" asp-page="Index" asp-page-handler="EditRole">
+    @Html.HiddenFor(r => r.RoleId)
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label style="font-size:20px ;color:darkgoldenrod;" asp-for="@Model.Title"></label>
+                    <input type="text" class="form-control" asp-for="@Model.Title">
+                    <span asp-validation-for="@Model.Title" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <label style="font-size:20px ;color:darkgoldenrod;">انتخاب دسترسی ها</label>
+                <div class="row">
+                    @foreach (var item in Enum.GetNames(typeof(Permission)))
+                    {
+                        var id = Guid.NewGuid();
+
+                        <div class="col-md-4">
+                            <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
+                                <label class="mb-1 d-block">@item.Replace("_", " ")</label>
+                                <input type="checkbox" value="@item" checked="@(Model.Permissions.Any(f => f.ToString() == item))" class="custom-control-input" name="permissions" id="@id">
+                                <label class="custom-control-label" for="@id">
+                                    <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                    <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                </label>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-left">
+        <cancel back-url="Roles"></cancel>
+        <submit />
+    </div>
+</form>

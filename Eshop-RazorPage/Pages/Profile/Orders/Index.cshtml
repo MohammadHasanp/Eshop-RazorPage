@@ -1,0 +1,124 @@
+﻿@page
+@using Eshop_RazorPage.Infrastructure.Util
+@using Eshop_RazorPage.Models.Order
+@model Eshop_RazorPage.Pages.Profile.Orders.IndexModel
+@{
+    ViewData["Title"] = "لیست سفارشات";
+}
+<div class="row mb-5">
+    <partial name="Profile/_ProfileSideBar" />
+    <div class="col-lg-9 col-md-8">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="section-title mb-2">
+                    تاریخچه سفارشات
+                </div>
+                <section class="shadow-around p-3">
+                    <div class="d-none d-sm-block">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link @(Model.FilterResult.FilterParams.Status == OrderStatus.None ? "active" : null)" asp-page="Index"
+                                   asp-route-Status="@OrderStatus.None">
+                                    همه
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Model.FilterResult.FilterParams.Status == OrderStatus.Finally ? "active" : null)" asp-page="Index"
+                                   asp-route-Status="@OrderStatus.Finally">
+                                    در حال پردازش
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Model.FilterResult.FilterParams.Status == OrderStatus.Pennding ? "active" : null)" asp-page="Index"
+                                   asp-route-Status="@OrderStatus.Pennding">
+                                    در انتظار پرداخت
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Model.FilterResult.FilterParams.Status == OrderStatus.Shipping ? "active" : null)" asp-page="Index"
+                                   asp-route-Status="@OrderStatus.Shipping">
+                                    ارسال شده
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Model.FilterResult.FilterParams.Status == OrderStatus.Rejected ? "active" : null)" asp-page="Index"
+                                   asp-route-Status="@OrderStatus.Rejected">
+                                    مرجوع شده
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <section class="table--order shadow-around mt-4">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>شماره سفارش</th>
+                                                <th>تاریخ ثبت سفارش</th>
+                                                <th>مبلغ قابل پرداخت</th>
+                                                <th>تعداد کل اقلام</th>
+                                                <th>وضعیت</th>
+                                                <th>عملیات پرداخت</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.FilterResult.Datas)
+                                            {
+                                                <tr>
+                                                    <td class="order-code">@item.Id</td>
+                                                    <td>@item.LastUpdate.ToPersianDate()</td>
+                                                    <td>@item.TotalPrice.ToString("0,#")تومان</td>
+                                                    <td>@item.TotalItemCount</td>
+                                                    <td>
+                                                        @switch (item.Status)
+                                                        {
+                                                            case (OrderStatus.None):
+                                                                <span class="badge bg-primary text-white">همه</span>
+                                                                break;
+
+                                                            case (OrderStatus.Finally):
+                                                                <span class="badge bg-primary text-white"> در حال پردازش</span>
+                                                                break;
+
+                                                            case (OrderStatus.Pennding):
+                                                                <span class="badge bg-primary text-white">در انتظار پرداخت</span>
+                                                                break;
+
+                                                            case (OrderStatus.Rejected):
+                                                                <span class="badge bg-primary text-white">  مرجوع شده</span>
+                                                                break;
+
+                                                            case (OrderStatus.Shipping):
+                                                                <span class="badge bg-primary text-white">ارسال شده</span>
+                                                                break;
+                                                        }
+                                                    </td>
+                                                    <td class="order-detail-link">
+
+
+                                                        @if (item.Status == OrderStatus.Pennding)
+                                                        {
+                                                            <a href="/checkout">پرداخت</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a asp-page="Show" asp-route-orderId="@item.Id">
+                                                                <i class="far fa-chevron-left"></i>
+                                                            </a>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

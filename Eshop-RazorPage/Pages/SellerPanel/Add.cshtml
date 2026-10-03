@@ -1,0 +1,20 @@
+﻿@page
+@model Eshop_RazorPage.Pages.SellerPanel.AddModel
+@{
+    ViewData["title"] = "افزودن فروشنده";
+    ViewData["selected"] = "Sellers";
+}
+<form method="post" class="card">
+    <div class="row  card-body">
+        <div class="col-md-6">
+            @Html.EditorFor(m => m.shopName)
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(m => m.NationalCode)
+        </div>
+    </div>
+    <div class="card-footer text-left">
+     <submit />
+     <cancel back-url="Index"></cancel>
+    </div>
+</form>

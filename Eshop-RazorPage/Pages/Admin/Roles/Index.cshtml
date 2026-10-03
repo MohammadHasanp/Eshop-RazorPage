@@ -1,0 +1,34 @@
+﻿@page "{Handler?}"
+@model Eshop_RazorPage.Pages.Admin.Roles.IndexModel
+@{
+    ViewData["title"] = "مدیرت نقش ها";
+    ViewData["selected"] = "roles";
+    var ID = 1;
+}
+<h3>@ViewData["title"]</h3>
+<open-modal-helper modal-title="افزودن نقش" url="@Url.Page("Index","ShowAddPage")">افزودن نقش</open-modal-helper>
+<div class="table-responsive card card-body p-0">
+    <table class="table table-bordered mb-0">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>عنوان</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Roles)
+            {
+                <tr>
+                    <td>@ID</td>
+                    <td>@item.Title</td>
+                    <td>
+                        <open-modal-helper modal-title="ویرایش نقش " class="btn btn-primary btn-sm" url="@Url.Page("Index", "ShowEditPage",new {roleId = item.Id})">ویرایش</open-modal-helper>
+                        <delete-item url="@Url.Page("Index","DeleteRole",new{roleId = item.Id})">حذف</delete-item>                        
+                    </td>
+                </tr>
+                ID += 1;
+            }
+        </tbody>
+    </table>
+</div>

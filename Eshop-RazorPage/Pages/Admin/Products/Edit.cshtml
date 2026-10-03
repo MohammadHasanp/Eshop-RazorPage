@@ -1,0 +1,143 @@
+﻿@page
+@using Eshop_RazorPage.Models.Category
+@using Eshop_RazorPage.Services.Category
+@model Eshop_RazorPage.Pages.Admin.Products.EditModel
+@inject ICategoryServices _service
+@{
+    var categories = await _service.GetAllCategory();
+    var category = await _service.GetCategoryById(Model.CategoryId);
+    ViewData["title"] = "ویرایش محصول";
+    ViewData["selected"] = "Products_Product";
+}
+<h3>@ViewData["title"]</h3>
+<form class="card" method="post" enctype="multipart/form-data">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                @Html.EditorFor(f => f.Title)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(f => f.Slug)
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(f => f.Description)
+            </div>
+            <div class="col-md-4">
+                <label asp-for="CategoryId"></label>
+                <select asp-for="CategoryId" class="form-control select2">
+                    @if(category!=null)
+                    {
+                        <option value="@category.Id">@category.Title</option>
+                        @foreach (var item in categories)
+                        {
+                            if (item.Id != category.Id)
+                            {
+                                <option value="@item.Id">@item.Title</option>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <option value="0">انتخاب دسته بندی</option>
+                        @foreach (var item in categories)
+                        {
+                            <option value="@item.Id">@item.Title</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="SubCategoryId"></label>
+                <select asp-for="SubCategoryId" class="form-control select2">
+                    <option value="0">انتخاب دسته بندی</option>
+                    @{
+                        var subCategories = new List<SubCategoryDto>();
+                        if (Model.CategoryId > 0)
+                        {
+                            subCategories = await _service.GetCategoryByParentId(Model.CategoryId);
+                        }
+                    }
+                    @foreach (var item in subCategories)
+                    {
+                        <option value="@item.Id">@item.Title</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="SecondarySubCategory"></label>
+                <select asp-for="SecondarySubCategory" class="form-control select2">
+                    <option value="0">انتخاب دسته بندی</option>
+                    @{
+                        var secondCategories = new List<SubCategoryDto>();
+                        if (Model.SubCategoryId > 0)
+                        {
+                            secondCategories = await _service.GetCategoryByParentId(Model.SubCategoryId);
+                        }
+                    }
+                    @foreach (var item in secondCategories)
+                    {
+                        <option value="@item.Id">@item.Title</option>
+                    }
+                </select>
+            </div>
+            @Html.EditorFor(f => f.SeoData)
+            <div class="col-md-6">
+                @Html.EditorFor(f => f.ImageFile)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12  ">
+        <h4>مشخصات محصول</h4>
+        <table class="table bg-white p-0 card-primary table-bordered text-center">
+            <thead>
+                <tr class="text-center">
+                    <th>عنوان</th>
+                    <th>مقدار</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                @if (!Model.Keys.Any())
+                {
+                    <tr>
+                        <td>
+                            <input placeholder="وزن" autocomplete="off" type="text" name="Keys" class="form-control" />
+                        </td>
+                        <td>
+                            <input placeholder="1 کیلو" autocomplete="off" type="text" name="Values" class="form-control" />
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    for (var i = 0; i < Model.Keys.Count; i++)
+                    {
+                        if (i >= Model.Values.Count)
+                        {
+                            break;
+                        }
+                        <tr>
+                            <td>
+                                <input autocomplete="off" type="text" name="Keys" value="@Model.Keys[i]" class="form-control" />
+                            </td>
+                            <td>
+                                <input autocomplete="off" type="text" name="Values" value="@Model.Values[i]" class="form-control" />
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+        <div class="form-input">
+            <div class=" mt-2">
+                <input id="rowCount" type="number" placeholder="تعداد مورد نظر را وارد کنید" class="form-control text-right text-right" style="width: 20%; display: inline-block" />
+                <p style="margin: 0 10px; display: inline-block">ردیف</p>
+                <a onclick="AddRow()" class="btn  btn-primary text-white text-center" style="height: fit-content;  display: inline"> اضافه کن</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-left">
+        <cancel></cancel>
+        <submit />
+    </div>
+</form>

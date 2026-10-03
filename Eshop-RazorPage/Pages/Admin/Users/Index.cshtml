@@ -1,0 +1,99 @@
+﻿@page "{handler?}"
+@using Eshop_RazorPage.Infrastructure
+@using Eshop_RazorPage.Infrastructure.Util
+@model Eshop_RazorPage.Pages.Admin.Users.IndexModel
+@{
+    var message = "";
+    var alert = "";
+    ViewData["title"] = "مدیریت کاربران";
+    ViewData["selected"] = "Users";
+    
+}
+<h3>@ViewData["title"]</h3>
+<form class="card shadow-lg " method="get">
+    <div class="card-header text-left">
+        <a asp-page="Index" class="btn btn-danger btn-sm">حذف فیلتر</a>
+        <button type="submit" class="btn btn-primary btn-sm">فیلتر</button>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <label>شناسه کاربر</label>
+                <input type="number" asp-for="FilterParams.Id" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label>تلفن</label>
+                <input type="number" asp-for="FilterParams.PhoneNumber" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label>ایمیل</label>
+                <input type="text" asp-for="FilterParams.Email" class="form-control"/>
+            </div>
+        </div>
+    </div>
+</form>
+@* <a asp-page="Add" class="btn btn-success mb-2">
+    <i class="fa fa-plus"></i>
+    افرودن محصول
+</a> *@
+<div class="card">
+    <div class="card-body table-responsive p-0">
+        <table class="table table-bordered table-hover text-center">
+            <thead>
+                <tr>
+                    <th>عکس</th>
+                    <th>نام کاربری</th>
+                    <th>تاریخ عضویت</th>
+                    <th>ایمیل</th>
+                    <th>تلفن</th>
+                    <th>جنسیت</th>
+                    <th>وضعیت</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.UserFilterResult.Datas.Any())
+                {
+                    @foreach (var item in Model.UserFilterResult.Datas)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@Directories.GetAvatarUser(item.AvatarName)" style="width:100px;" />
+                            </td>
+                            <td>@item.UserName</td>
+                            <td>@item.CreationDate.ToPersianDateTime()</td>
+                            <td>@item.Email</td>
+                            <td>@item.PhoneNumber</td>
+                            <td>@item.Gender</td>
+                            <td>
+                                <input class="form-control" disabled type="checkbox" checked="@(item.IsActive == true ? "checked" : null)" />
+                            </td>
+                            <td>
+                                @if (item.IsActive == true)
+                                {
+                                    message = "غیر فعال کردن کاربر";
+                                    alert = "ایا از غیر فعال کردن کاربر مطمئا هستید";
+                                }
+                                else
+                                {
+                                    message = "فعال کردن کاربر ";
+                                    alert = "ایا از فعالا کردن کاربر مطمئا هستید؟";
+                                }
+                                <a class="btn btn-sm btn-primary" asp-page="Edit" asp-route-userId="@item.Id">ویرایش</a>
+                                <set-active alert="@alert"  url="@Url.Page("Edit","SetActiveUser",new {userId = item.Id})">
+                                    @message
+                                </set-active>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">موردی برای نمایش وجود ندارد</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

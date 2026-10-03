@@ -1,0 +1,56 @@
+﻿@page
+@model Eshop_RazorPage.Pages.Auth.LoginModel
+@{
+    Layout = "Shared/Layouts/_AuthLayout";
+    ViewData["Title"] = "ورود به سایت";
+}
+@Html.HiddenFor(p => p.RedirectTo)
+<div style="padding-top:200px;" class="auth-wrapper">
+    <div class="auth-form shadow-around">
+        <div class="site-logo">
+            <a href="#">
+                <img src="~/assets/images/logo.png" alt="logo">
+            </a>
+        </div>
+        <div class="auth-form-title">
+            @ViewData["Title"]
+        </div>
+        <form method="post">
+
+            <div class="form-element-row">
+                @Html.EditorFor(l => l.PhoneNumber)
+            </div>
+
+            <div class="form-element-row">
+                @Html.EditorFor(l => l.Password)
+
+                <label for="password" class="label-element">
+
+                    <span class="d-flex justify-content-between">
+                        <a href="#" class="link--with-border-bottom">رمز عبور خود را فراموش کرده‌ام</a>
+                    </span>
+
+                </label>
+            </div>
+
+            @* <div class="form-element-row">
+                <label class="container-checkbox">
+                    مرا به خاطر داشته باش
+                    <input type="checkbox" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
+            </div> *@
+            <div class="form-element-row text-left">
+                <button class="btn-element btn-info-element">
+                    <i class="fad fa-sign-in-alt"></i>
+                    ورود به سایت
+                </button>
+            </div>
+
+        </form>
+        <div class="auth-form-footer">
+            <span>کاربر جدید هستید؟</span>
+            <a asp-page="Register" class="link--with-border-bottom">ثبت نام در سایت</a>
+        </div>
+    </div>
+</div>

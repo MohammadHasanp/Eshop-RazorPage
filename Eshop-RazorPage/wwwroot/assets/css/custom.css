@@ -1,0 +1,22 @@
+﻿.field-validation-error {
+    color: red;
+}
+
+.input-validation-error {
+    border-color: red !important;
+}
+
+.input-element:focus {
+    outline: none;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,123,255,.5);
+}
+.delete-address button {
+        color: red;
+        border-color: red;
+}
+.delete-address {
+    position: absolute;
+    bottom: 15px;
+}

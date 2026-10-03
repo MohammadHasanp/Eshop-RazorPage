@@ -1,0 +1,32 @@
+﻿@page "{Handler?}"
+@model Eshop_RazorPage.Pages.Admin.Users.EditModel
+@{
+    ViewData["title"] = "ویرایش کاربر";
+    ViewData["selected"] = "Users";
+}
+<h3>@ViewData["title"]</h3>
+<form class="card" method="post" enctype="multipart/form-data">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                @Html.EditorFor(f => f.UserName)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(f => f.Email)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(f => f.PhoneNumber)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(f => f.Gender)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(f => f.Avatar)
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-left">
+        <cancel back-url="Index"></cancel>
+        <submit />
+    </div>
+</form>

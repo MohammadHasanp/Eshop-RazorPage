@@ -1,0 +1,45 @@
+﻿@page
+@using Eshop_RazorPage.Infrastructure
+@using Eshop_RazorPage.Models.Product
+@using Eshop_RazorPage.Services.Product
+@model Eshop_RazorPage.Pages.SellerPanel.Inventories.AddModel
+@inject IProductServices _service;
+@{
+    ViewData["title"] = "افزودن محصول";
+    ViewData["selected"] = "Seller_Inventory";
+    var products = await _service.GetProductByFilter(new ProductFilterParams()
+    {
+        PageId = 1,
+        Take = 1000,
+    });
+}
+<form method="post" class="card" enctype="multipart/form-data">
+    <div class="row  card-body">
+        <div class="col-md-6">
+            <label>انتخاب محصول</label>
+            <select asp-for="ProductId" class="form-control select2">
+                @foreach (var item in products.Datas)
+                {
+                    <option value="@item.Id" data-image="@Directories.GetProductImage(item.ImageName)">
+                        @item.Title
+                    </option>
+                    @* <option value="@item.Id"> @item.Title</option> *@
+
+                    
+                }
+            </select>
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(m => m.Price)
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(m => m.Count)
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(m => m.DiscountPercentage)
+        </div>
+    </div>
+    <div class="card-footer text-left">
+        <button class="btn btn-success" type="submit">ثبت اطلاعات</button>
+    </div>
+</form>
