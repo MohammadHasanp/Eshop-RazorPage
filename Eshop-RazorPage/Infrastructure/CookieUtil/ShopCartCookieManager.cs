@@ -1,5 +1,4 @@
-﻿using CookieManager;
-using Eshop_RazorPage.Models;
+﻿using Eshop_RazorPage.Models;
 using Eshop_RazorPage.Models.Order;
 using Eshop_RazorPage.Services.Product;
 using Eshop_RazorPage.Services.Seller.Inventory;
@@ -7,18 +6,12 @@ using System.Threading.Tasks;
 
 namespace Eshop_RazorPage.Infrastructure.CookieUtil
 {
-    public class ShopCartCookieManager
+    public class ShopCartCo cookieManager,
+        ISellerInventoryService service,
+        IProductServices productService)
     {
-        private readonly ICookieManager _cookieManager;
-        private readonly ISellerInventoryService _service;
-        private readonly IProductServices _productService;
+        private readonly ICookieManager _cookieManager = cookieManager;
         private const string CookieShopCartName = "Shop-Cart";
-        public ShopCartCookieManager(ICookieManager cookieManager, ISellerInventoryService service, IProductServices productService)
-        {
-            _cookieManager = cookieManager;
-            _service = service;
-            _productService = productService;
-        }
 
         public OrderDto? GetShopCart()
         {
@@ -45,11 +38,11 @@ namespace Eshop_RazorPage.Infrastructure.CookieUtil
         public async Task<ApiResult> AddItem(long inventoryId, int count)
         {
             var shopCart = GetShopCart();
-            var inventory = await _service.GetSellerInventoryById(inventoryId);
+            var inventory = await service.GetSellerInventoryById(inventoryId);
             if (inventory == null)
                 return ApiResult.Error();
 
-            var product = await _productService.GetProductById(inventory!.productId);
+            var product = await productService.GetProductById(inventory!.productId);
 
             if (shopCart == null)
             {
