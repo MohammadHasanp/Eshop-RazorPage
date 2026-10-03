@@ -193,6 +193,4 @@ Then manually verify the affected storefront, authentication, admin, or seller f
 - GitHub: [@MohammadHasanp](https://github.com/MohammadHasanp)
 - Repository: [MohammadHasanp/Eshop-RazorPage](https://github.com/MohammadHasanp/Eshop-RazorPage)
 
-## License
 
-No license file is currently included in this repository. Until a license is added, all rights are reserved by the copyright holder. Add a `LICENSE` file before redistributing the project.
